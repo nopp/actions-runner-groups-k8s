@@ -1,4 +1,4 @@
-# Github Actions runners for K8S
+# Github Actions runners (groups) for K8S
 
 ### 1) Create runner group
 ```
