@@ -5,9 +5,7 @@ on: [push]
 jobs:
 
   testes:
- 
-    runs-on: self-hosted-default 
- 
-    steps:
-    - name: kubectl version
-      run: kubectl version
+     runs-on: self-hosted-default
+     steps:
+      - name: kubectl version
+        run: kubectl version
