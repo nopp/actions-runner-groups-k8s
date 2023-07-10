@@ -25,3 +25,31 @@ Change ORGANIZATION_NAME and GROUP_NAME
 ```
 $ kubectl apply -f k8s/deploy.yaml
 ```
+
+### Action example for build and push to GCR
+```
+name: runner-build
+
+on: 
+  release:
+    types: [created]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Get the version
+        id: get_tag_name
+        run: echo ::set-output name=GIT_TAG_NAME::${GITHUB_REF/refs\/tags\//}        
+      - name: Build and Push
+        uses: RafikFarhad/push-to-gcr-github-action@v4.1.0
+        with:
+          gcloud_service_key: ${{ secrets.ServiceAccountWithGCRAccess }}
+          registry: gcr.io
+          project_id: yourGCPProject
+          image_name: actions-runner
+          image_tag: latest,${{ steps.get_tag_name.outputs.GIT_TAG_NAME }}
+```
