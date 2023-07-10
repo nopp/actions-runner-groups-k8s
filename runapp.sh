@@ -11,6 +11,6 @@ echo "Configuring runner."
 sudo chmod u+x /opt/runsvc.sh /opt/runapp.sh
 
 echo "Running runner."
-./opt/runsvc.sh "$*" &
+/opt/runsvc.sh "$*" &
 
 wait $!
