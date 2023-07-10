@@ -26,7 +26,7 @@ Change ORGANIZATION_NAME and GROUP_NAME
 $ kubectl apply -f k8s/deploy.yaml
 ```
 
-### Action example for build and push to GCR
+### An action example for build and push to GCR
 ```
 name: runner-build
 
