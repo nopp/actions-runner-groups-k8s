@@ -19,6 +19,6 @@ jobs:
         with:
           gcloud_service_key: ${{ secrets.ServiceAccountWithGCRAccess }}
           registry: gcr.io
-          project_id: mb-prod-277215
+          project_id: yourProject
           image_name: actions-runner
           image_tag: latest,${{ steps.get_tag_name.outputs.GIT_TAG_NAME }}
