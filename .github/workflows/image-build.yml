@@ -14,4 +14,4 @@ jobs:
         id: get_tag_name
         run: echo ::set-output name=GIT_TAG_NAME::${GITHUB_REF/refs\/tags\//}
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag my-image-name:${{ steps.get_tag_name.outputs.GIT_TAG_NAME }}
+        run: docker build . --file Dockerfile --tag actions-runner:${{ steps.get_tag_name.outputs.GIT_TAG_NAME }}
