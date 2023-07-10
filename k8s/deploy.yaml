@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-runner
+  labels:
+    app: actions-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: actions-runner
+  template:
+    metadata:
+      labels:
+        app: actions-runner
+    spec:
+      containers:
+      - name: mb-runner
+        image: k8s-actions-runner:0.0.1
+        env:
+        - name: ORGANIZATION_NAME
+          value: GitHubOrgName
+        - name: GROUP_NAME
+          value: GitHubOrgName
+        - name: GITHUB_PAT
+          valueFrom:
+            secretKeyRef:
+              name: github
+              key: pat
