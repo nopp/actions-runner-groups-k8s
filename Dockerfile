@@ -13,6 +13,7 @@ RUN apt-get update \
         && echo "sre ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 ADD runapp.sh /opt/runapp.sh
+ADD runsvc.sh /opt/runsvc.sh
 
 # Create sre
 RUN adduser --disabled-password --gecos "" sre
@@ -33,7 +34,7 @@ RUN curl -fkLO  https://github.com/actions/runner/releases/download/v${RUNNER_VE
 
 # Change owner to SRE
 RUN chown -R sre.sre /opt/* \
-        && chmod u+x /opt/runapp.sh
+        && sudo chmod u+x /opt/runapp.sh /opt/runsvc.sh
 
 # Default user
 USER sre
