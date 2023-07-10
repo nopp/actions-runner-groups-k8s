@@ -1,5 +1,9 @@
 # Github Actions runners (groups) for K8S
-
+```
+Available commands:
+* Kubectl
+* Terraform
+```
 ### 1) Create runner group
 ```
 Org Settings > Actions > Runner groups
