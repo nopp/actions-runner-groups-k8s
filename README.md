@@ -1,2 +1,1 @@
-# k8s-actions-runner
-Github Actions runner for K8S
+# Github Actions runner for K8S
