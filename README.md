@@ -1,4 +1,4 @@
-# Github Actions runners groups for K8S
+# Github Actions Runner Groups for K8S
 ```
 Available commands:
 * Kubectl
