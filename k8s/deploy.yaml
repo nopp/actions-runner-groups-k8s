@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: actions-runner
-        image: k8s-actions-runner:0.0.1
+        image: actions-runner-groups-k8s:latest
         env:
         - name: ORGANIZATION_NAME
           value: GitHubOrgName
