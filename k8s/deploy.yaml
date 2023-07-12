@@ -15,7 +15,7 @@ spec:
         app: actions-runner
     spec:
       containers:
-      - name: mb-runner
+      - name: actions-runner
         image: k8s-actions-runner:0.0.1
         env:
         - name: ORGANIZATION_NAME
