@@ -8,19 +8,16 @@ ENV TERRAFORM_VERSION "1.5.2"
 
 WORKDIR /opt
 
-ADD runsvc.sh /opt/runsvc.sh
-ADD runapp.sh /opt/runapp.sh
-
 RUN apt-get update \
-        && apt-get install -y docker.io jq curl git sudo vim unzip \
+        && apt-get install -y jq curl git sudo vim unzip \
         && apt-get clean \
         && echo "sre ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+ADD runapp.sh /opt/runapp.sh
+ADD runsvc.sh /opt/runsvc.sh
+
 # Create sre
 RUN adduser --disabled-password --gecos "" sre
-
-# Docker config
-RUN usermod -aG docker sre
 
 # Terraform
 RUN  curl -k -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
