@@ -9,7 +9,7 @@ ENV TERRAFORM_VERSION "1.5.2"
 WORKDIR /opt
 
 RUN apt-get update \
-        && apt-get install -y jq curl git sudo vim unzip \
+        && apt-get install -y jq curl git sudo vim unzip docker.io \
         && apt-get clean \
         && echo "sre ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
