@@ -1,5 +1,17 @@
 # Github Actions Runner Groups for K8S
 ```
+            POD 
+ _________________________
+|        Container        |
+|  ________    _________  |
+| | Docker |  | Actions | |
+| | Dind   |  | Runner  | |
+| '________'  '_________' |
+'_________________________'
+
+```
+
+```
 Available commands:
 * Kubectl
 * Terraform
