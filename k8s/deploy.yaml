@@ -1,7 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-runner
+  name: runner-v2
+  namespace: actions-runner
   labels:
     app: actions-runner
 spec:
@@ -14,16 +15,36 @@ spec:
       labels:
         app: actions-runner
     spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
       containers:
-      - name: actions-runner
-        image: actions-runner-groups-k8s:latest
+      - name: docker
+        image: docker:dind-rootless
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - name: docker-certs
+            mountPath: /certs/server
+      - name: runner
+        image: ghcr.io/nopp/actions-runner-groups-k8s:0.0.8
+        volumeMounts:
+          - name: docker-certs
+            mountPath: /home/sre/.docker
         env:
+        - name: DOCKER_HOST
+          value: "localhost:2376"
+        - name: DOCKER_TLS_VERIFY
+          value: "1"
         - name: ORGANIZATION_NAME
-          value: GitHubOrgName
+          value: yourOrgHere
         - name: GROUP_NAME
-          value: GitHubOrgName
+          value: yourGroupHere
         - name: GITHUB_PAT
           valueFrom:
             secretKeyRef:
               name: github
               key: pat
+      volumes:
+        - name: docker-certs
+          emptyDir: {}
