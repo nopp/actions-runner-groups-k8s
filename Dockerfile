@@ -3,7 +3,7 @@ from ubuntu:22.04
 ENV GITHUB_PAT ""
 ENV RUNNER_LABELS ""
 ENV GROUP_NAME ""
-ENV RUNNER_VERSION "2.306.0"
+ENV RUNNER_VERSION "2.307.0"
 ENV TERRAFORM_VERSION "1.5.2"
 
 WORKDIR /opt
@@ -17,7 +17,8 @@ ADD runapp.sh /opt/runapp.sh
 ADD runsvc.sh /opt/runsvc.sh
 
 # Create sre
-RUN adduser --disabled-password --gecos "" sre
+RUN adduser --disabled-password --gecos "" sre \
+	&& usermod -aG docker sre
 
 # Terraform
 RUN  curl -k -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
@@ -39,6 +40,8 @@ RUN curl -fkLO  https://github.com/actions/runner/releases/download/v${RUNNER_VE
 # Change owner to SRE
 RUN chown -R sre.sre /opt/* \
         && sudo chmod u+x /opt/runapp.sh /opt/runsvc.sh
+
+VOLUME /var/lib/docker
 
 # Default user
 USER sre
