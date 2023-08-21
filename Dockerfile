@@ -43,7 +43,4 @@ RUN chown -R sre.sre /opt/* \
 
 VOLUME /var/lib/docker
 
-# Default user
-USER sre
-
 ENTRYPOINT ["/opt/runapp.sh"]
