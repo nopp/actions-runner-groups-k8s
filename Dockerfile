@@ -3,13 +3,16 @@ from ubuntu:22.04
 ENV GITHUB_PAT ""
 ENV RUNNER_LABELS ""
 ENV GROUP_NAME ""
-ENV RUNNER_VERSION "2.307.0"
+ENV RUNNER_VERSION "2.308.0"
 ENV TERRAFORM_VERSION "1.5.2"
+ENV DOCKER_CREDENTIAL_GCR "2.1.11"
+
+USER root
 
 WORKDIR /opt
 
 RUN apt-get update \
-        && apt-get install -y jq curl git sudo vim unzip docker.io \
+        && apt-get install -y jq curl git sudo vim unzip docker.io make \
         && apt-get clean \
         && echo "sre ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
@@ -37,13 +40,17 @@ RUN curl -fkLO  https://github.com/actions/runner/releases/download/v${RUNNER_VE
         && ./bin/installdependencies.sh \
         && rm -rf actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
 
+# docker-credential-gcloud
+RUN  curl -k -LO https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v${DOCKER_CREDENTIAL_GCR}/docker-credential-gcr_linux_amd64-${DOCKER_CREDENTIAL_GCR}.tar.gz \
+        && tar xzf docker-credential-gcr_linux_amd64-${DOCKER_CREDENTIAL_GCR}.tar.gz \
+        && install -o root -g root -m 0755 docker-credential-gcr /usr/local/bin/docker-credential-gcr \
+	&& install -o root -g root -m 0755 docker-credential-gcr /usr/local/bin/docker-credential-gcloud \
+	&& rm -rf docker-credential-gcr_linux_amd64-${DOCKER_CREDENTIAL_GCR}.tar.gz
+
 # Change owner to SRE
-RUN chown -R sre.sre /opt/* \
-        && sudo chmod u+x /opt/runapp.sh /opt/runsvc.sh
+ RUN chown -R sre.sre /opt/* \
+         && sudo chmod u+x /opt/runapp.sh /opt/runsvc.sh
 
 VOLUME /var/lib/docker
-
-# Default user
-USER sre
 
 ENTRYPOINT ["/opt/runapp.sh"]
