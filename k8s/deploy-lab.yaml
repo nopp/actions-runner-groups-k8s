@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: runners-lab-v1
+  namespace: actions-runner
+  labels:
+    app: actions-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: actions-runner
+  template:
+    metadata:
+      labels:
+        app: actions-runner
+    spec:
+      containers:
+      - name: docker
+        image: docker:dind
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        volumeMounts:
+          - name: docker-certs
+            mountPath: /certs/server
+      - name: runner
+        image: ghcr.io/nopp/actions-runner-groups-k8s:0.0.8
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: docker-certs
+            mountPath: /home/sre/.docker
+          - name: kube-config
+            mountPath: /root/.kube
+        env:
+        - name: DOCKER_HOST
+          value: "localhost:2376"
+        - name: DOCKER_TLS_VERIFY
+          value: "1"
+        - name: ORGANIZATION_NAME
+          value: yourOrgHere
+        - name: GROUP_NAME
+          value: default
+        - name: GITHUB_PAT
+          valueFrom:
+            secretKeyRef:
+              name: github
+              key: pat
+      volumes:
+        - name: docker-certs
+          emptyDir: {}
+        - name: kube-config
+          secret:
+            secretName: kube-config
