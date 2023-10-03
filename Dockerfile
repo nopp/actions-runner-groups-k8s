@@ -23,6 +23,12 @@ ADD runsvc.sh /opt/runsvc.sh
 RUN adduser --disabled-password --gecos "" sre \
 	&& usermod -aG docker sre
 
+# Newrelic Cli
+RUN curl -k -LO  https://github.com/newrelic/newrelic-cli/releases/download/v${NEWRELIC_VERSION}/newrelic-cli_${NEWRELIC_VERSION}_Linux_x86_64.tar.gz \
+	&& tar xzf newrelic-cli_${NEWRELIC_VERSION}_Linux_x86_64.tar.gz \
+ 	&& install -o root -g root -m 0755 newrelic /usr/local/bin/newrelic \
+  	&& rm -rf newrelic-cli_${NEWRELIC_VERSION}_Linux_x86_64.tar.gz
+
 # Terraform
 RUN  curl -k -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
         && unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
