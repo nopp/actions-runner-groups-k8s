@@ -49,17 +49,6 @@ resource "kubernetes_deployment" "runner" {
           security_context {
             privileged = true
           }
-
-          resources {
-            limits = {
-              cpu    = "0.5"
-              memory = "512Mi"
-            }
-            requests = {
-              cpu    = "250m"
-              memory = "50Mi"
-            }
-          }
         }
         container {
           image = "ghcr.io/nopp/actions-runner-groups-k8s:0.0.10"
@@ -113,17 +102,6 @@ resource "kubernetes_deployment" "runner" {
           volume_mount {
             mount_path = "/opt/_work"
             name = "work"
-          }          
-
-          resources {
-            limits = {
-              cpu    = "0.5"
-              memory = "512Mi"
-            }
-            requests = {
-              cpu    = "250m"
-              memory = "50Mi"
-            }
           }
         }
       }
