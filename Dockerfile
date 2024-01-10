@@ -57,7 +57,7 @@ RUN  curl -k -LO https://github.com/GoogleCloudPlatform/docker-credential-gcr/re
 
 # Change owner to SRE
  RUN chown -R sre.sre /opt/* \
-         && sudo chmod u+x /opt/runapp.sh /opt/runsvc.sh
+         && sudo chmod u+x /opt/runapp.sh /opt/runsvc.sh /opt/removeRunner.sh
 
 VOLUME /var/lib/docker
 
