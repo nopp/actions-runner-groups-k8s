@@ -25,17 +25,19 @@ spec:
           - name: docker-certs
             mountPath: /certs/server
       - name: runner
-        image: ghcr.io/nopp/actions-runner-groups-k8s:0.0.13
+        image: ghcr.io/nopp/actions-runner-groups-k8s:0.0.14
         imagePullPolicy: Always
         lifecycle:
           preStop:
             exec:
               command:
-                - "sh"
+                - "bash"
                 - "-c"
-                - >
-                  cd /opt/
-                  ./removeRunner.sh
+                - |
+                   export RUNNER_TOKEN=$(curl -s -X POST https://api.github.com/orgs/${ORGANIZATION_NAME}/actions/runners/registration-token -H "accept: application/vnd.github.everest-preview+json" -H "authorization: token ${GITHUB_PAT}" | jq -r '.token')
+                   # Remove the runner
+                   cd /opt
+                   sudo -E -u sre ./config.sh remove --token ${RUNNER_TOKEN}
         volumeMounts:
           - name: docker-certs
             mountPath: /home/sre/.docker
