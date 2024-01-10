@@ -19,6 +19,7 @@ RUN apt-get update \
 
 ADD runapp.sh /opt/runapp.sh
 ADD runsvc.sh /opt/runsvc.sh
+ADD removeRunner.sh /opt/removeRunner.sh
 
 # Create sre
 RUN adduser --disabled-password --gecos "" sre \
